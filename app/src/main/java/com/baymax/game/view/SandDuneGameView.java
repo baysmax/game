@@ -16,6 +16,8 @@ import android.view.ViewConfiguration;
 
 import com.baymax.game.helper.SandDuneHelper;
 import com.baymax.game.utils.Utils;
+
+
 import androidx.annotation.Nullable;
 
 /**
@@ -29,7 +31,8 @@ public class SandDuneGameView extends View implements Runnable, View.OnTouchList
     /**
      * 迭代时间间隔
      */
-    public static final int TIME_IN_FRAME = 17;
+    public  int time_in_frame = 17;
+
 
     private Paint gridPaint,sandPaint;
 
@@ -81,8 +84,8 @@ public class SandDuneGameView extends View implements Runnable, View.OnTouchList
     /**
      * 网格的大小 同时也是单位长度
      */
-    private int mSize = 10;
-    private int[][] sendDune;
+    private int mSize = 3;
+    private char[][] sendDune;
     /**
      * 执行的代数
      */
@@ -95,8 +98,15 @@ public class SandDuneGameView extends View implements Runnable, View.OnTouchList
      * 是否暂停
      */
     private boolean isPause=false;
-
+    /**
+     * 正在绘制时需要暂停计算
+     */
     private boolean isDrawPause=false;
+
+    /**
+     * 是否只绘制发生改变的部分
+     */
+    private boolean isDrawChange=false;
     /**
      * 工作线程
      */
@@ -110,6 +120,8 @@ public class SandDuneGameView extends View implements Runnable, View.OnTouchList
      * 最小缩放倍数
      */
     private float initScale = 0.5f;
+
+
 
 
     public SandDuneGameView(Context context) {
@@ -165,6 +177,7 @@ public class SandDuneGameView extends View implements Runnable, View.OnTouchList
         long startTime = System.currentTimeMillis();
         drawGrid(canvas);
         drawSendDune(canvas);
+
         long endTime = System.currentTimeMillis();
         Log.i("time","绘制耗时="+(endTime-startTime));
         isDrawPause=false;
@@ -186,12 +199,15 @@ public class SandDuneGameView extends View implements Runnable, View.OnTouchList
      * @param canvas
      */
     RectF mRectF=new RectF();
-    int i;
     private void drawSendDune(Canvas canvas) {
         if (sendDune==null)return;
         for (int x = 0; x < sendDune.length; x++) {
             for (int y = 0; y < sendDune[x].length; y++) {
                 if (sendDune[x][y]==0)continue;
+                if (isDrawChange&&helper.getLastSendDune()!=null&&sendDune[x][y]==helper.getLastSendDune()[x][y]){
+                    //只绘制发生改变的坐标
+                    continue;
+                }
                 if (sendDune[x][y]<mSandColor.length&&sendDune[x][y]>=0) sandPaint.setColor(mSandColor[sendDune[x][y]]);
                 mRectF.set(x* mSize,
                         y* mSize,
@@ -214,12 +230,12 @@ public class SandDuneGameView extends View implements Runnable, View.OnTouchList
             long endTime = System.currentTimeMillis();
             Log.i("time","计算下一代耗时="+(endTime-startTime));
 
-            /**计算出一次更新的毫秒数**/
+            /*计算出一次更新的毫秒数**/
             int diffTime  = (int)(endTime - startTime);
 
-            while(diffTime <=TIME_IN_FRAME) {
+            while(time_in_frame!=0&&diffTime <=time_in_frame) {
                 diffTime = (int)(System.currentTimeMillis() - startTime);
-                /**线程等待**/
+                /*线程等待**/
                 Thread.yield();
             }
             while (isPause||isDrawPause){
@@ -248,7 +264,7 @@ public class SandDuneGameView extends View implements Runnable, View.OnTouchList
     }
     /**
      * 获得当前的缩放比例
-     * @return
+     * @return float
      */
     public final float getScale() {
         mMatrix.getValues(matrixValues);
@@ -305,11 +321,11 @@ public class SandDuneGameView extends View implements Runnable, View.OnTouchList
             public boolean onScale(ScaleGestureDetector detector) {
                 float scale = getScale();
                 float scaleFactor = detector.getScaleFactor();
-                /**
+                /*
                  * 缩放的范围控制
                  */
                 if ((scale < SCALE_MAX && scaleFactor > 1.0f) || (scale > initScale && scaleFactor < 1.0f)) {
-                    /**
+                    /*
                      * 最大值最小值判断
                      */
                     if (scaleFactor * scale < initScale) {
@@ -318,13 +334,12 @@ public class SandDuneGameView extends View implements Runnable, View.OnTouchList
                     if (scaleFactor * scale > SCALE_MAX) {
                         scaleFactor = SCALE_MAX / scale;
                     }
-                    /**
+                    /*
                      * 设置缩放比例
                      */
                     mMatrix.postScale(scaleFactor, scaleFactor, detector.getFocusX(), detector.getFocusY());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         setAnimationMatrix(mMatrix);
-                    }else {
                     }
                 }
 
@@ -348,9 +363,9 @@ public class SandDuneGameView extends View implements Runnable, View.OnTouchList
     /**
      * 是否是推动行为
      *
-     * @param dx
-     * @param dy
-     * @return
+     * @param dx x
+     * @param dy y
+     * @return boolean
      */
     private boolean isCanDrag(float dx, float dy) {
         return Math.sqrt((dx * dx) + (dy * dy)) >= mTouchSlop;
@@ -362,5 +377,25 @@ public class SandDuneGameView extends View implements Runnable, View.OnTouchList
 
     public void setRandom() {
         helper.randomData(sendDune);
+    }
+
+    public void setIsDrawChange(boolean isDrawChange) {
+        this.isDrawChange = isDrawChange;
+    }
+    public boolean isDrawChange() {
+        return isDrawChange;
+    }
+
+    public int getTime_in_frame() {
+        return time_in_frame;
+    }
+
+    public void setTime_in_frame(int time_in_frame) {
+        this.time_in_frame = time_in_frame;
+    }
+
+    public void close() {
+        mIsDrawing=false;
+        thread.interrupt();
     }
 }

@@ -31,4 +31,10 @@ public class LifeGameActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHab.close();
+    }
 }

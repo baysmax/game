@@ -49,7 +49,7 @@ public class LifeGameView extends View implements Runnable,View.OnTouchListener 
     /**
      * cell的大小 同时也是单位长度
      */
-    private float mSize = 2f;
+    private float mSize = 1f;
 
     /**
      * cell的颜色
@@ -95,7 +95,7 @@ public class LifeGameView extends View implements Runnable,View.OnTouchListener 
     /**
      * 当代细胞数组
      */
-    private int[][] cells;
+    private char[][] cells;
     /**
      * 宽高
      */
@@ -385,7 +385,7 @@ public class LifeGameView extends View implements Runnable,View.OnTouchListener 
         postInvalidate();
     }
 
-    public void clear(){
+    public void close(){
         mIsDrawing = false;
         thread.interrupt();
     }

@@ -20,15 +20,15 @@ public class LifeGameHelper {
      * @param width 宽高
      * @param high 边界index
      */
-    private  int cells[][];
+    private  char cells[][];
 
     /**
      * 创建生命游戏
      * @param width
      * @param high
      */
-    public  int[][] createGame(int width, int high) {
-        cells =new int[width][high];
+    public  char[][] createGame(int width, int high) {
+        cells =new char[width][high];
         return cells;
     }
 
@@ -47,9 +47,9 @@ public class LifeGameHelper {
     /**
      * 计算下一代
      */
-    public  int[][] calculationNextCell(){
+    public  char[][] calculationNextCell(){
         //创建下一代细胞
-        int[][] nextCells=new int[cells.length][cells[0].length];
+        char[][] nextCells=new char[cells.length][cells[0].length];
         //根据上一代细胞计算下一代细胞的权重
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
@@ -86,7 +86,7 @@ public class LifeGameHelper {
 //        allHabit.push(habit);
         return cells;
     }
-    public int[][] lastHabit(){
+    public char[][] lastHabit(){
 //        habit = allHabit.pop();
         return cells;
     }
@@ -96,7 +96,7 @@ public class LifeGameHelper {
      * @param i
      * @param j
      */
-    private  void checkedNextCell(int i, int j, int cells[][]) {
+    private  void checkedNextCell(int i, int j, char cells[][]) {
         if (i+1<cells.length){
 //                     边界判断是否超出右边界
             ++cells[i+1][j];

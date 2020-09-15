@@ -4,6 +4,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:clipChildren="false"
     android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tvSpeed"
+        android:text="计算绘制速度"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <com.baymax.game.view.SandDuneGameView
         android:id="@+id/mSandDuneGameView"
         android:layout_width="match_parent"
@@ -28,6 +38,12 @@
         <Button
             android:id="@+id/btnRandom"
             android:text="随机"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btnChange"
+            android:text="只绘制改变"
             android:onClick="onClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
