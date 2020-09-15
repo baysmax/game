@@ -9,7 +9,10 @@ import android.widget.SeekBar;
 import com.baymax.game.view.SandDuneGameView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+/**
+ * @Created by  Baymax on 2020/9/10.
+ * @e-mail 761241917@qq.com
+ */
 public class SandDuneGameActivity extends AppCompatActivity {
     SandDuneGameView mSandDuneGameView;
     SeekBar seekBar;

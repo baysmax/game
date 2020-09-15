@@ -33,7 +33,6 @@ import androidx.core.view.ViewCompat;
 /**
  * 常用工具类
  * Created by Baymax on 2020/4/24.
- * Copyright © 2020/4/24 Hyperspace Technology(Beijing)Co.,Ltd. All rights reserved.
  */
 public final class Utils {
 

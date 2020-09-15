@@ -7,7 +7,10 @@ import android.view.View;
 import com.baymax.game.view.LifeGameView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+/**
+ * @Created by  Baymax on 2020/9/10.
+ * @e-mail 761241917@qq.com
+ */
 public class LifeGameActivity extends AppCompatActivity {
     LifeGameView mHab;
     @Override

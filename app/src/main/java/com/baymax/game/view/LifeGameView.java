@@ -22,7 +22,6 @@ import com.baymax.game.utils.Utils;
 /**
  * 生命游戏View （继承自View）
  * @Created by  Baymax on 2020/9/2.
- * Copyright © 2020/9/2 Hyperspace Technology(Beijing)Co.,Ltd. All rights reserved.
  * @e-mail 761241917@qq.com
  */
 public class LifeGameView extends View implements Runnable,View.OnTouchListener {

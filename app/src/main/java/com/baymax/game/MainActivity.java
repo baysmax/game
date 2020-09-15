@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * @Created by  Baymax on 2020/9/10.
- * Copyright © 2020/9/10 Hyperspace Technology(Beijing)Co.,Ltd. All rights reserved.
  * @e-mail 761241917@qq.com
  */
 public class MainActivity extends AppCompatActivity {
